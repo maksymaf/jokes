@@ -1,35 +1,33 @@
 const express = require('express');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongo');
 const path = require('path');
 const mongoose = require('mongoose');
-const Joke = require('./models/joke');
+const jokeRouter = require('./routes/routes.joke');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: false,
+    resave: false,
+    store: MongoDBStore.create({mongoUrl: process.env.MONGODB_URI}),
+    cookie: {
+        expires: 1000 * 60 * 60 * 24 // 1day
+    }
+}));
+app.use('/', jokeRouter);
+app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.post('/add-joke', async (req, res) => {
-    const { joke } = req.body;
-    const jokeObj = new Joke({joke});
-    await jokeObj.save();
-
-    res.sendStatus(201);
-});
-
-app.get('/random-joke', async (req, res) => {
-    const jokes = await Joke.find({});
-    res.status(200).json({joke: jokes[Math.floor(Math.random() * jokes.length)]});
-})
 
 mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log('connected successfuly'))
+.then(() => {
+    console.log('connected to database successfuly');
+    app.listen(PORT, () => {
+        console.log(`server is listening on port ${PORT}`);
+    });
+})
 .catch(() => console.log('connection failed'))
-
-app.listen(PORT);

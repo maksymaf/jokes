@@ -3,9 +3,8 @@ const wrap = document.querySelector('.wrap');
 const jokeContent = document.querySelector('.joke-content');
 
 getRandomJoke.addEventListener('click', () => {
-    axios.get('https://jokes-b3fp.onrender.com/random-joke')
+    axios.get('/random-joke')
     .then(response => {
-        
         jokeContent.textContent = response.data.joke.joke;
     });
 });
