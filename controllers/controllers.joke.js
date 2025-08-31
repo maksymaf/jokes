@@ -9,7 +9,7 @@ class JokeController {
     }
 
     async getRandomJoke(req, res) {
-        const jokes = await Joke.find({});
+        const jokes = await Joke.find({verified: true});
         res.status(200).json({joke: jokes[Math.floor(Math.random() * jokes.length)]});
     }
 

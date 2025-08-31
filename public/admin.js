@@ -1,14 +1,5 @@
 const wrap = document.querySelector('.wrap');
 
-function deleteJoke(e){
-    const id = e.target.id;
-    axios.delete(`/delete-joke/${id}`);
-}
-
-function updateJoke(e) {
-    const id = e.target.id.split('-')[0];
-    axios.put(`/verify-joke/${id}`)
-}
 
 async function getAllJokes() {
     wrap.innerHTML = '';
@@ -50,5 +41,18 @@ async function getAllJokes() {
         wrap.appendChild(joke);
     });
 }
+
+function deleteJoke(e){
+    const id = e.target.id;
+    axios.delete(`/delete-joke/${id}`)
+        .then(getAllJokes);
+}
+
+function updateJoke(e) {
+    const id = e.target.id.split('-')[0];
+    axios.put(`/verify-joke/${id}`)
+        .then(getAllJokes);
+}
+
 
 getAllJokes();
