@@ -37,18 +37,44 @@ class UserController {
         let user = await User.findOne({email});
 
         if (!user) {
-            res.redirect('/register');
+            console.log('Called 1');
+            return res.redirect('/register');
         }
 
         const isPasswordCorrect = bcrypt.compareSync(password, user.password);
 
         if(!isPasswordCorrect){
-            res.redirect('/login');
+            console.log(isPasswordCorrect);
+            return res.redirect('/login');
         }
 
+        req.session.email = email; 
         req.session.isAuth = true;
         res.redirect('/');
+    }
+
+    getAddJokePage(req, res){
+        res.status(200).sendFile(path.join(__dirname, '..', 'public', 'addJoke.html'));
+    }
+
+    logoutUser(req, res){
+        req.session.destroy(err => {
+            
+            if (err){
+                console.log(err);
+                return res.status(500).send('Щось пішло не так 500');
+            }
+            
+            res.clearCookie('connect.sid');
+            res.redirect('/login');
+        });
+    }
+
+    async getAllUsers(req, res){
+        const users = await User.find({});
+        res.status(200).json(users);
     }
 }
 
 module.exports = new UserController();
+// 12345

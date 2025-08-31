@@ -3,15 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Jokes</title>
     <!-- axios -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.11.0/axios.min.js" integrity="sha512-h9644v03pHqrIHThkvXhB2PJ8zf5E9IyVnrSfZg8Yj8k4RsO4zldcQc4Bi9iVLUCCsqNY0b4WXVV4UB+wbWENA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- style.css -->
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <div class="wrap">
-        <p class="joke-content"></p>
+    <header>
+        <nav class="nav-bar">
+            <ul class="nav-bar-items">
+                <!-- <li class="nav-bar-item"><a href="/add-joke">Create joke</a></li>
+                <li class="nav-bar-item"><a href="/login">Log In</a></li>
+                <li class="nav-bar-item"><a href="/register">Register</a></li>
+                <li class="nav-bar-item"><a href="/logout">Logout</a></li> -->
+            </ul>
+        </nav>
+    </header>
+    <div class="wrap main-wrap" id="joke-wrap">
+        <p class="joke-content">Press button below to get random joke</p>
+        <p id="author"></p>
         <button id="get-random-joke">Get Random Joke</button>
     </div>
     <script src="./main.js"></script>

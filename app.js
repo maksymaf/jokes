@@ -4,11 +4,13 @@ const MongoDBStore = require('connect-mongo');
 const path = require('path');
 const mongoose = require('mongoose');
 const jokeRouter = require('./routes/routes.joke');
+const isAuthRouter = require('./routes/authStatus');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -20,6 +22,7 @@ app.use(session({
     }
 }));
 app.use('/', jokeRouter);
+app.use('/api', isAuthRouter);
 app.use(express.static(path.join(__dirname, 'public')))
 
 
